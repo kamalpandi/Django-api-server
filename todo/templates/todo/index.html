@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="utf-8">
+    <title>{{title}}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <style>
+        .card {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            background: #e3f2fd;
+            margin-bottom: 20px;
+            border-radius: 12px;
+            padding: 20px;
+            overflow: auto;
+            text-overflow: ellipsis;
+            transition: background 0.3s ease;
+        }
+
+        .card:hover {
+            background: #e4fcea;
+        }
+
+        .submit_form {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border: 1px solid #ddd;
+        }
+
+        .submit_form h3 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .submit_form input,
+        .submit_form textarea,
+        .submit_form select {
+            width: 100%;
+            margin-bottom: 15px;
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+        }
+
+        .submit_form input[type="submit"] {
+            background-color: #337ab7;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            transition: background 0.3s ease;
+        }
+
+        .submit_form input[type="submit"]:hover {
+            background-color: #286090;
+        }
+    </style>
+
+</head>
+
+<body class="container-fluid">
+
+    {% if messages %}
+    <div class="row">
+        <div class="col-md-12">
+            {% for message in messages %}
+            <div class="alert alert-info">
+                <strong>{{message}}</strong>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+    <center class="row">
+        <h1><i>__TODO LIST__</i></h1>
+        <hr />
+    </center>
+
+    <div class="row">
+        <div class="col-md-8" id="todo-list-container">
+            {% for i in list %}
+            <div id="todo-{{i.id}}" class="card">
+                <center><b>{{i.title}}</b></center>
+                <hr />
+                {{i.date}}
+                <hr />
+                {{i.details}}
+                <br />
+                <br />
+                <form hx-post="{% url 'del' i.id %}" hx-target="#todo-{{i.id}}" hx-swap="outerHTML">
+                    {% csrf_token %}
+                    <button value="remove" type="submit" class="btn btn-primary" style="float: right;"><span
+                            class="glyphicon glyphicon-trash"></span> &nbsp; remove</button>
+                </form>
+            </div>
+            {% endfor%}
+        </div>
+        <div class="col-md-1"> </div>
+        <div class="col-md-3">
+            <div class="submit_form">
+                <form hx-post="/todo/" hx-target="#todo-list-container" hx-swap="beforeend">
+                    {% csrf_token %}
+                    {{forms}}
+                    <center>
+                        <input type="submit" class="btn btn-default" value="submit" />
+                    </center>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

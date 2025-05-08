@@ -1,0 +1,15 @@
+<div id="todo-{{i.id}}" class="card">
+    <center><b>{{i.title}}</b></center>
+    <hr />
+    {{i.date}}
+    <hr />
+    {{i.details}}
+    <br />
+    <br />
+    <form hx-post="{% url 'del' i.id %}" hx-target="#todo-{{i.id}}" hx-swap="outerHTML">
+        {% csrf_token %}
+        <button value="remove" type="submit" class="btn btn-primary" style="float: right;">
+            <span class="glyphicon glyphicon-trash"></span> &nbsp; remove
+        </button>
+    </form>
+</div>
