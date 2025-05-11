@@ -1,0 +1,35 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Homepage</title>
+    <script src="https://unpkg.com/htmx.org@1.9.12"></script>
+    <link rel="stylesheet" href="{% static 'home.css' %} ">
+
+</head>
+
+<body>
+    <header>
+        <h1>Kamal's Digital Space</h1>
+        <nav>
+            <ul>
+                <li><a href="/todo/">Todo</a></li>
+                <li><a href="/weather/">Weather</a></li>
+                <li><a href="/pic_to_ASCII/">ASCII Art</a></li>
+            </ul>
+        </nav>
+    </header>
+
+
+    <footer>
+        <p>&copy; 2025 Kamal</p>
+        <a href="https://www.linkedin.com/in/kamalpandi/" target="_blank" rel="noopener noreferrer">LinkedIn Profile</a>
+        <a href="https://github.com/kamalpandi" target="_blank" rel="noopener noreferrer">GitHub</a>
+    </footer>
+
+</body>
+
+</html>
