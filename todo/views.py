@@ -1,13 +1,13 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
-
+from django.contrib.auth.decorators import login_required
 from .forms import TodoForm
 from .models import Todo
 
 # Create your views here.
 
-
+@login_required
 def index(request):
     item_list = Todo.objects.order_by("-date")
 
@@ -26,7 +26,7 @@ def index(request):
     }
     return render(request, "todo/index.html", page)
 
-
+@login_required
 def remove(request, item_id):
     item = get_object_or_404(Todo, id=item_id)
     item.delete()
