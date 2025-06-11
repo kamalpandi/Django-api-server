@@ -1,13 +1,11 @@
+import os
 import json
 import urllib.request
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from ..models import EssentialWeatherReport, FullWeatherReport
-
-# Define the API key and base URL as global constants
-API_KEY = "b6faadd28429358d910f9a620e0edfc1"
-BASE_URL = "http://api.openweathermap.org/data/2.5/weather"
-
+from dotenv import load_dotenv
+load_dotenv()
 
 @csrf_exempt
 def index(request):
@@ -20,7 +18,7 @@ def index(request):
             if not city:
                 return JsonResponse({"error": "City not provided"}, status=400)
 
-            url = f"{BASE_URL}?q={city}&appid={API_KEY}"
+            url = f"{ os.environ.get("BASE_URL")}?q={city}&appid={os.environ.get("API_KEY")}"
             source = urllib.request.urlopen(url).read()
             list_of_data = json.loads(source)
 
@@ -52,6 +50,7 @@ def weather_for_cities(request):
             # Decode the request body
             body_unicode = request.body.decode("utf-8")
             body_data = json.loads(body_unicode)
+            print(type(body_data))
             print("body_data", body_data)
             # Get the list of cities
             cities = body_data.get("cities")
@@ -75,7 +74,7 @@ def weather_for_cities(request):
                     continue  # Skip to the next city
 
                 # Construct the API URL for the current city
-                url = f"{BASE_URL}?q={city}&appid={API_KEY}"
+                url = f"{ os.environ.get("BASE_URL")}?q={city}&appid={os.environ.get("API_KEY")}"
 
                 try:
                     # Make the API request
@@ -178,7 +177,7 @@ def full_weather_report(request):
             if not city:
                 return JsonResponse({"error": "City not provided"}, status=400)
 
-            url = f"{BASE_URL}?q={city}&appid={API_KEY}"
+            url = f"{ os.environ.get("BASE_URL")}?q={city}&appid={os.environ.get("API_KEY")}"
             source = urllib.request.urlopen(url).read()
             list_of_data = json.loads(source)
 

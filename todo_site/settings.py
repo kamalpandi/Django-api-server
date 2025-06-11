@@ -24,9 +24,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-h(seb=dpj-v^i&2ug4j94@3li)(s$^nm_vmg9a%upy4ume$ux8"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ["vibi.pythonanywhere.com"]
+ALLOWED_HOSTS = ["vibi.pythonanywhere.com", "*"]
 
 # Application definition
 
