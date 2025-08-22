@@ -1,6 +1,6 @@
 version = 1
 revision = 3
-requires-python = ">=3.12"
+requires-python = ">=3.13"
 
 [[package]]
 name = "asgiref"
@@ -37,6 +37,11 @@ dependencies = [
     { name = "tzdata" },
 ]
 
+[package.dev-dependencies]
+dev = [
+    { name = "django-debug-toolbar" },
+]
+
 [package.metadata]
 requires-dist = [
     { name = "asgiref", specifier = "==3.8.1" },
@@ -45,6 +50,9 @@ requires-dist = [
     { name = "sqlparse", specifier = "==0.5.3" },
     { name = "tzdata", specifier = "==2025.2" },
 ]
+
+[package.metadata.requires-dev]
+dev = [{ name = "django-debug-toolbar", specifier = ">=6.0.0" }]
 
 [[package]]
 name = "django-crispy-forms"
@@ -56,6 +64,19 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/88/a1/ffd7b0e160296121d88e3e173165370000ee4de7328f5c4f4b266638dcd9/django_crispy_forms-2.4.tar.gz", hash = "sha256:915e1ffdeb2987d78b33fabfeff8e5203c8776aa910a3a659a2c514ca125f3bd", size = 278932, upload-time = "2025-04-13T07:25:00.176Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/1d/ec/a25f81e56a674e63cf6c3dd8e36b1b3fecc238fecd6098504adc0cc61402/django_crispy_forms-2.4-py3-none-any.whl", hash = "sha256:5a4b99876cfb1bdd3e47727731b6d4197c51c0da502befbfbec6a93010b02030", size = 31446, upload-time = "2025-04-13T07:24:58.516Z" },
+]
+
+[[package]]
+name = "django-debug-toolbar"
+version = "6.0.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "django" },
+    { name = "sqlparse" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/c5/d5/5fc90234532088aeec5faa48d5b09951cc7eab6626030ed427d3bd8cd9bc/django_debug_toolbar-6.0.0.tar.gz", hash = "sha256:6eb9fa6f4a5884bf04004700ffb5a44043f1fff38784447fc52c1633448c8c14", size = 305331, upload-time = "2025-07-25T13:11:48.68Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/05/b5/4724a8c18fcc5b09dca7b7a0e70c34208317bb110075ad12484d6588ae91/django_debug_toolbar-6.0.0-py3-none-any.whl", hash = "sha256:0cf2cac5c307b77d6e143c914e5c6592df53ffe34642d93929e5ef095ae56841", size = 266967, upload-time = "2025-07-25T13:11:47.265Z" },
 ]
 
 [[package]]
