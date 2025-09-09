@@ -38,16 +38,9 @@ def weather_view(request):
 
             if city not in CITIES:
                 return HttpResponse(f"City '{city}' not found.", status=404)
-
-            list_of_data = {
-                "sys": {"country": "GB" if city == "London" else "IN"},
-                "coord": {"lon": 77.5946, "lat": 12.9716},
-                "main": {
-                    "temp": 300.15,  # Kelvin
-                    "pressure": 1012,
-                    "humidity": 80,
-                },
-            }
+            url = f"{os.environ.get('BASE_URL')}?q={city}&appid={os.environ.get('API_KEY')}"
+            source = urllib.request.urlopen(url).read()
+            list_of_data = json.loads(source)
 
             temp_celsius = list_of_data["main"]["temp"] - 273.15
             data = {
