@@ -1,11 +1,71 @@
 import os
 import json
 import urllib.request
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
+from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from ..models import EssentialWeatherReport, FullWeatherReport
 from dotenv import load_dotenv
+
 load_dotenv()
+
+
+CITIES = [
+    "London",
+    "Paris",
+    "New York",
+    "Tokyo",
+    "Sydney",
+    "Bengaluru",
+    "Dubai",
+    "Moscow",
+]
+
+
+def weather_view(request):
+    """
+    Handles rendering the main page on GET and fetching weather data on POST.
+    """
+    if request.method == "GET":
+        return render(request, "weather/index.html", {"cities": CITIES})
+
+    if request.method == "POST":
+        try:
+            city = request.POST.get("city")
+
+            if not city:
+                return HttpResponse("City not provided", status=400)
+
+            if city not in CITIES:
+                return HttpResponse(f"City '{city}' not found.", status=404)
+
+            list_of_data = {
+                "sys": {"country": "GB" if city == "London" else "IN"},
+                "coord": {"lon": 77.5946, "lat": 12.9716},
+                "main": {
+                    "temp": 300.15,  # Kelvin
+                    "pressure": 1012,
+                    "humidity": 80,
+                },
+            }
+
+            temp_celsius = list_of_data["main"]["temp"] - 273.15
+            data = {
+                "city": city,
+                "country_code": list_of_data["sys"]["country"],
+                "coordinate": f"{list_of_data['coord']['lon']} {list_of_data['coord']['lat']}",
+                "temp": f"{temp_celsius:.1f}°C",
+                "pressure": list_of_data["main"]["pressure"],
+                "humidity": list_of_data["main"]["humidity"],
+            }
+
+            return render(request, "weather/weather_snippet.html", data)
+
+        except Exception as e:
+            return HttpResponse(f"Error: {e}", status=500)
+
+    return HttpResponse("Method not allowed", status=405)
+
 
 @csrf_exempt
 def index(request):
@@ -18,7 +78,7 @@ def index(request):
             if not city:
                 return JsonResponse({"error": "City not provided"}, status=400)
 
-            url = f"{ os.environ.get("BASE_URL")}?q={city}&appid={os.environ.get("API_KEY")}"
+            url = f"{os.environ.get('BASE_URL')}?q={city}&appid={os.environ.get('API_KEY')}"
             source = urllib.request.urlopen(url).read()
             list_of_data = json.loads(source)
 
@@ -74,7 +134,7 @@ def weather_for_cities(request):
                     continue  # Skip to the next city
 
                 # Construct the API URL for the current city
-                url = f"{ os.environ.get("BASE_URL")}?q={city}&appid={os.environ.get("API_KEY")}"
+                url = f"{os.environ.get('BASE_URL')}?q={city}&appid={os.environ.get('API_KEY')}"
 
                 try:
                     # Make the API request
@@ -177,7 +237,7 @@ def full_weather_report(request):
             if not city:
                 return JsonResponse({"error": "City not provided"}, status=400)
 
-            url = f"{ os.environ.get("BASE_URL")}?q={city}&appid={os.environ.get("API_KEY")}"
+            url = f"{os.environ.get('BASE_URL')}?q={city}&appid={os.environ.get('API_KEY')}"
             source = urllib.request.urlopen(url).read()
             list_of_data = json.loads(source)
 

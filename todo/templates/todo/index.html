@@ -1,70 +1,82 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
-
-<head>
-    <meta charset="utf-8">
+  <head>
+    <meta charset="utf-8" />
     <title>{{title}}</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+    />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="https://unpkg.com/htmx.org@1.9.10"></script>
-    <link rel="stylesheet" href="{% static 'index.css' %} ">
+    <link rel="stylesheet" href="{% static 'index.css' %} " />
+  </head>
 
-</head>
-
-<body class="container-fluid">
-
+  <body class="container-fluid">
     {% if messages %}
     <div class="row">
-        <div class="col-md-12">
-            {% for message in messages %}
-            <div class="alert alert-info">
-                <strong>{{message}}</strong>
-            </div>
-            {% endfor %}
+      <div class="col-md-12">
+        {% for message in messages %}
+        <div class="alert alert-info">
+          <strong>{{message}}</strong>
         </div>
+        {% endfor %}
+      </div>
     </div>
     {% endif %}
 
     <center class="row">
-        <h1><i>__TODO LIST__</i></h1>
-        <hr />
+      <h1><i>__TODO LIST__</i></h1>
+      <hr />
     </center>
 
     <div class="row">
-        <div class="col-md-8" id="todo-list-container">
-            {% for i in list %}
-            <div id="todo-{{i.id}}" class="card">
-                <center><b>{{i.title}}</b></center>
-                <hr />
-                {{i.date}}
-                <hr />
-                {{i.details}}
-                <br />
-                <br />
-                <form hx-post="{% url 'del' i.id %}" hx-target="#todo-{{i.id}}" hx-swap="outerHTML">
-                    {% csrf_token %}
-                    <button value="remove" type="submit" class="btn btn-primary" style="float: right;"><span
-                            class="glyphicon glyphicon-trash"></span> &nbsp; remove</button>
-                </form>
-            </div>
-            {% endfor%}
+      <div class="col-md-8" id="todo-list-container">
+        {% for i in list %}
+        <div id="todo-{{i.id}}" class="card">
+          <center><b>{{i.title}}</b></center>
+          <hr />
+          {{i.date}}
+          <hr />
+          {{i.details}}
+          <br />
+          <br />
+          <form
+            hx-post="{% url 'del' i.id %}"
+            hx-target="#todo-{{i.id}}"
+            hx-swap="outerHTML"
+          >
+            {% csrf_token %}
+            <button
+              value="remove"
+              type="submit"
+              class="btn btn-primary"
+              style="float: right"
+            >
+              <span class="glyphicon glyphicon-trash"></span> &nbsp; remove
+            </button>
+          </form>
         </div>
-        <div class="col-md-1"> </div>
-        <div class="col-md-3">
-            <div class="submit_form">
-                <form hx-post="/todo/" hx-target="#todo-list-container" hx-swap="beforeend">
-                    {% csrf_token %}
-                    {{forms}}
-                    <center>
-                        <input type="submit" class="btn btn-default" value="submit" />
-                    </center>
-                </form>
-            </div>
+        {% endfor%}
+      </div>
+      <div class="col-md-1"></div>
+      <div class="col-md-3">
+        <div class="submit_form">
+          <form
+            hx-post="/todo/"
+            hx-target="#todo-list-container"
+            hx-swap="beforeend"
+          >
+            {% csrf_token %} {{forms}}
+            <center>
+              <input type="submit" class="btn btn-default" value="submit" />
+            </center>
+          </form>
         </div>
+      </div>
     </div>
-</body>
-
+  </body>
 </html>

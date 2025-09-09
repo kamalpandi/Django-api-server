@@ -2,7 +2,8 @@ from django.urls import path
 from .views import views, views_static
 
 urlpatterns = [
-    path("", views.index),
+    path("", views.weather_view, name="weather_view"),
+    path("one_city", views.index),
     path("full_report", views.full_weather_report),
     path("save_full_report", views.save_full_weather_report),
     path("save_essential_report", views.save_essential_weather_report),
