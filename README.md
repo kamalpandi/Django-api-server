@@ -1,6 +1,6 @@
 # Django Multi-App Dashboard
 
-This repository hosts a **Django project** featuring multiple interactive web applications built with **HTMX** for a dynamic frontend experience. The project is designed to showcase mostly backend and little frontend capabilities, with clean modular architecture and scalable app structure.
+This [repository](https://vibi.pythonanywhere.com/) hosts a **Django project** featuring multiple interactive web applications built with **HTMX** for a dynamic frontend experience. The project is designed to showcase mostly backend and little frontend capabilities, with clean modular architecture and scalable app structure.
 
 ## Features
 
