@@ -38,18 +38,23 @@ def weather_view(request):
 
             if city not in CITIES:
                 return HttpResponse(f"City '{city}' not found.", status=404)
+
             url = f"{os.environ.get('BASE_URL')}?q={city}&appid={os.environ.get('API_KEY')}"
             source = urllib.request.urlopen(url).read()
             list_of_data = json.loads(source)
 
-            temp_celsius = list_of_data["main"]["temp"] - 273.15
+            temp_kelvin = list_of_data.get("main", {}).get("temp")
+            temp_celsius = (
+                f"{temp_kelvin - 273.15:.1f}°C" if temp_kelvin is not None else "N/A"
+            )
+
             data = {
                 "city": city,
-                "country_code": list_of_data["sys"]["country"],
-                "coordinate": f"{list_of_data['coord']['lon']} {list_of_data['coord']['lat']}",
-                "temp": f"{temp_celsius:.1f}°C",
-                "pressure": list_of_data["main"]["pressure"],
-                "humidity": list_of_data["main"]["humidity"],
+                "country_code": list_of_data.get("sys", {}).get("country", "N/A"),
+                "coordinate": f"{list_of_data.get('coord', {}).get('lon')} {list_of_data.get('coord', {}).get('lat')}",
+                "temp": temp_celsius,
+                "pressure": list_of_data.get("main", {}).get("pressure", "N/A"),
+                "humidity": list_of_data.get("main", {}).get("humidity", "N/A"),
             }
 
             return render(request, "weather/weather_snippet.html", data)
@@ -92,22 +97,18 @@ def index(request):
     return JsonResponse({"error": "Only POST method allowed"}, status=405)
 
 
-@csrf_exempt  # Add this decorator if you are testing with tools like Postman and not submitting via a Django form
+@csrf_exempt
 def weather_for_cities(request):
     """
     Fetches weather data for a list of cities provided in a POST request.
-    Expects a JSON body with a "cities" key, e.g., {"cities": ["London", "Tokyo", "NonExistentCity"]}.
+    Expects JSON: {"cities": ["London", "Tokyo", "NonExistentCity"]}
     """
     if request.method == "POST":
         try:
-            # Decode the request body
             body_unicode = request.body.decode("utf-8")
             body_data = json.loads(body_unicode)
-            print(type(body_data))
-            print("body_data", body_data)
-            # Get the list of cities
+
             cities = body_data.get("cities")
-            print("cities", cities)
             if not cities or not isinstance(cities, list):
                 return JsonResponse(
                     {"error": "City list not provided or not in correct format"},
@@ -119,40 +120,36 @@ def weather_for_cities(request):
             for city in cities:
                 if not isinstance(city, str) or not city.strip():
                     weather_data_list.append(
-                        {
-                            "city": city,  # Or a placeholder like "Invalid City Name"
-                            "error": "Invalid city name provided in the list.",
-                        }
+                        {"city": city, "error": "Invalid city name provided"}
                     )
-                    continue  # Skip to the next city
+                    continue
 
-                # Construct the API URL for the current city
                 url = f"{os.environ.get('BASE_URL')}?q={city}&appid={os.environ.get('API_KEY')}"
 
                 try:
-                    # Make the API request
                     source = urllib.request.urlopen(url).read()
                     list_of_data = json.loads(source)
 
-                    # Check if the API returned an error (e.g., city not found)
-                    if (
-                        list_of_data.get("cod") != 200
-                    ):  # OpenWeatherMap uses 'cod' for status
+                    if str(list_of_data.get("cod")) != "200":  # API error
                         weather_data_list.append(
                             {
                                 "city": city,
-                                "error": list_of_data.get(
-                                    "message", "City not found or API error"
-                                ),
+                                "error": list_of_data.get("message", "API error"),
                             }
                         )
                     else:
-                        # Format the data for the current city
+                        temp_kelvin = list_of_data.get("main", {}).get("temp")
+                        temp_celsius = (
+                            f"{temp_kelvin - 273.15:.2f}°C"
+                            if temp_kelvin is not None
+                            else "N/A"
+                        )
+
                         data = {
-                            "city": city,  # Include the city name for reference
+                            "city": city,
                             "country_code": list_of_data.get("sys", {}).get("country"),
                             "coordinate": f"{list_of_data.get('coord', {}).get('lon')} {list_of_data.get('coord', {}).get('lat')}",
-                            "temp": f"{list_of_data.get('main', {}).get('temp', 0) - 273.15:.2f}°C",  # Format to 2 decimal places
+                            "temp": temp_celsius,
                             "pressure": list_of_data.get("main", {}).get("pressure"),
                             "humidity": list_of_data.get("main", {}).get("humidity"),
                             "description": (
@@ -166,57 +163,33 @@ def weather_for_cities(request):
                         weather_data_list.append(data)
 
                 except urllib.error.HTTPError as e:
-                    # Handle HTTP errors (e.g., 404 Not Found from OpenWeatherMap)
                     weather_data_list.append(
                         {
                             "city": city,
-                            "error": f"API request failed for {city}: {e.code} {e.reason}",
+                            "error": f"API request failed: {e.code} {e.reason}",
                         }
                     )
                 except urllib.error.URLError as e:
-                    # Handle URL errors (e.g., network issues)
                     weather_data_list.append(
-                        {"city": city, "error": f"URL error for {city}: {e.reason}"}
+                        {"city": city, "error": f"Network error: {e.reason}"}
                     )
                 except json.JSONDecodeError:
                     weather_data_list.append(
-                        {
-                            "city": city,
-                            "error": f"Failed to decode API response for {city}.",
-                        }
+                        {"city": city, "error": "Failed to decode API response"}
                     )
                 except Exception as e:
-                    # Catch any other unexpected errors during the API call for a specific city
                     weather_data_list.append(
-                        {
-                            "city": city,
-                            "error": f"An unexpected error occurred for {city}: {str(e)}",
-                        }
+                        {"city": city, "error": f"Unexpected error: {str(e)}"}
                     )
 
-            return JsonResponse(
-                weather_data_list, safe=False
-            )  # safe=False is needed to return a list
+            return JsonResponse(weather_data_list, safe=False)
 
         except json.JSONDecodeError:
             return JsonResponse({"error": "Invalid JSON in request body"}, status=400)
         except Exception as e:
-            # Catch-all for other errors (e.g., issues with request.body)
-            return JsonResponse(
-                {"error": f"An overall error occurred: {str(e)}"}, status=500
-            )
+            return JsonResponse({"error": f"Overall error: {str(e)}"}, status=500)
 
     return JsonResponse({"error": "Only POST method allowed"}, status=405)
-
-
-# Example of how you might add this to your urls.py:
-# from django.urls import path
-# from . import views # Assuming your views.py contains the function
-#
-# urlpatterns = [
-#     path('weather-for-cities/', views.weather_for_cities, name='weather_for_cities'),
-#     # other paths...
-# ]
 
 
 @csrf_exempt
@@ -238,6 +211,12 @@ def full_weather_report(request):
 
         except json.JSONDecodeError:
             return JsonResponse({"error": "Invalid JSON"}, status=400)
+        except urllib.error.HTTPError as e:
+            return JsonResponse(
+                {"error": f"API request failed: {e.code} {e.reason}"}, status=502
+            )
+        except urllib.error.URLError as e:
+            return JsonResponse({"error": f"Network error: {e.reason}"}, status=503)
         except Exception as e:
             return JsonResponse({"error": str(e)}, status=500)
 
@@ -283,6 +262,10 @@ def save_essential_weather_report(request):
         try:
             # Parse the incoming JSON body
             data = json.loads(request.body)
+            if not all(
+                [data.get("coordinate"), data.get("country_code"), data.get("temp")]
+            ):
+                return JsonResponse({"error": "Missing required fields"}, status=400)
             print(data)
             # Create a new EssentialWeatherReport entry in the database
             EssentialWeatherReport.objects.create(
