@@ -6,7 +6,6 @@ from .forms import TodoForm
 from .models import Todo
 
 
-@login_required
 def index(request):
     item_list = Todo.objects.order_by("-date")
 
@@ -26,13 +25,21 @@ def index(request):
     return render(request, "todo/index.html", page)
 
 
-@login_required
+# @login_required
+# def remove(request, item_id):
+#     item = get_object_or_404(Todo, id=item_id)
+#     item.delete()
+
+
+#     if request.headers.get("HX-Request"):
+#         return HttpResponse("")
+#     else:
+#         messages.info(request, "Item removed !!!")
+#     return redirect("todo")
 def remove(request, item_id):
-    item = get_object_or_404(Todo, id=item_id)
-    item.delete()
+    # Disable deletion
+    messages.warning(request, "Deleting items is currently disabled.")
 
     if request.headers.get("HX-Request"):
-        return HttpResponse("")
-    else:
-        messages.info(request, "Item removed !!!")
+        return HttpResponse("")  # HTMX still expects a response
     return redirect("todo")
