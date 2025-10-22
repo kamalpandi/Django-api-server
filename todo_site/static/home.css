@@ -7,82 +7,82 @@ p,
 ul,
 li,
 a {
-    margin: 0;
-    padding: 0;
-    border: 0;
-    font-size: 100%;
-    font: inherit;
-    vertical-align: baseline;
-    text-decoration: none;
-    /* Remove underlines from links by default */
-    list-style: none;
-    /* Remove bullet points from lists */
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+  text-decoration: none;
+  /* Remove underlines from links by default */
+  list-style: none;
+  /* Remove bullet points from lists */
 }
 
 body {
-    font-family: sans-serif;
-    /* Choose a clean, readable sans-serif font */
-    line-height: 1.6;
-    background-color: #f4f4f4;
-    /* Light background color */
-    color: #333;
-    /* Dark text color */
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-    /* Ensure the footer stays at the bottom */
+  font-family: sans-serif;
+  /* Choose a clean, readable sans-serif font */
+  line-height: 1.6;
+  background-color: #f4f4f4;
+  /* Light background color */
+  color: #333;
+  /* Dark text color */
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  /* Ensure the footer stays at the bottom */
 }
 
 header {
-    background-color: #fff;
-    padding: 20px;
-    border-bottom: 1px solid #ddd;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  background-color: #fff;
+  padding: 20px;
+  border-bottom: 1px solid #ddd;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 header h1 {
-    font-size: 1.5em;
-    font-weight: bold;
+  font-size: 1.5em;
+  font-weight: bold;
 }
 
 header nav ul {
-    display: flex;
+  display: flex;
 }
 
 header nav ul li {
-    margin-left: 20px;
+  margin-left: 20px;
 }
 
 header nav ul li a {
-    color: #555;
-    transition: color 0.3s ease;
-    /* Smooth hover effect */
+  color: #555;
+  transition: color 0.3s ease;
+  /* Smooth hover effect */
 }
 
 header nav ul li a:hover {
-    color: #007bff;
-    /* Example accent color */
+  color: #007bff;
+  /* Example accent color */
 }
 
 footer {
-    background-color: #333;
-    color: #f4f4f4;
-    text-align: center;
-    padding: 10px;
-    font-size: 0.8em;
-    margin-top: auto;
-    /* Push the footer to the bottom */
+  background-color: #333;
+  color: #f4f4f4;
+  text-align: center;
+  padding: 10px;
+  font-size: 0.8em;
+  margin-top: auto;
+  /* Push the footer to the bottom */
 }
 
 footer a {
-    color: #f4f4f4;
-    margin: 0 10px;
-    transition: color 0.3s ease;
+  color: #f4f4f4;
+  margin: 0 10px;
+  transition: color 0.3s ease;
 }
 
 footer a:hover {
-    color: #007bff;
-    /* Example accent color */
+  color: #007bff;
+  /* Example accent color */
 }

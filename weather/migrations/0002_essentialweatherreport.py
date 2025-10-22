@@ -4,21 +4,28 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('weather', '0001_initial'),
+        ("weather", "0001_initial"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='EssentialWeatherReport',
+            name="EssentialWeatherReport",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('coordinate', models.CharField(max_length=100)),
-                ('country_code', models.CharField(max_length=10)),
-                ('humidity', models.IntegerField()),
-                ('pressure', models.IntegerField()),
-                ('temp', models.CharField(max_length=50)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("coordinate", models.CharField(max_length=100)),
+                ("country_code", models.CharField(max_length=10)),
+                ("humidity", models.IntegerField()),
+                ("pressure", models.IntegerField()),
+                ("temp", models.CharField(max_length=50)),
             ],
         ),
     ]

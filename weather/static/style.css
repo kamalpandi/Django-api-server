@@ -1,55 +1,55 @@
-      /* --- Basic Styling for a Clean Look (CSS) - Same as before --- */
-      body {
-          font-family: Arial, sans-serif;
-          background-color: #f0f4f8;
-          padding: 20px;
-          text-align: center;
-      }
+/* --- Basic Styling for a Clean Look (CSS) - Same as before --- */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f0f4f8;
+  padding: 20px;
+  text-align: center;
+}
 
-      .container {
-          max-width: 500px;
-          margin: 40px auto;
-          padding: 20px;
-          background-color: #ffffff;
-          border-radius: 8px;
-          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      }
+.container {
+  max-width: 500px;
+  margin: 40px auto;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
 
-      h1 {
-          color: #2c3e50;
-      }
+h1 {
+  color: #2c3e50;
+}
 
-      select,
-      button {
-          padding: 10px;
-          margin: 10px;
-          border-radius: 5px;
-          border: 1px solid #ccc;
-      }
+select,
+button {
+  padding: 10px;
+  margin: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
 
-      button {
-          background-color: #3498db;
-          color: white;
-          border: none;
-          cursor: pointer;
-      }
+button {
+  background-color: #3498db;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
 
-      button:hover {
-          background-color: #2980b9;
-      }
+button:hover {
+  background-color: #2980b9;
+}
 
-      #result {
-          margin-top: 20px;
-          font-size: 1.2em;
-          color: #2c3e50;
-      }
+#result {
+  margin-top: 20px;
+  font-size: 1.2em;
+  color: #2c3e50;
+}
 
-      .error {
-          color: #e74c3c;
-      }
+.error {
+  color: #e74c3c;
+}
 
-      /* Class to indicate a request is in progress */
-      .htmx-request {
-          opacity: 0.6;
-          transition: opacity 300ms ease-in;
-      }
+/* Class to indicate a request is in progress */
+.htmx-request {
+  opacity: 0.6;
+  transition: opacity 300ms ease-in;
+}

@@ -5,7 +5,6 @@ from django.contrib.auth.decorators import login_required
 from .forms import TodoForm
 from .models import Todo
 
-# Create your views here.
 
 @login_required
 def index(request):
@@ -25,6 +24,7 @@ def index(request):
         "title": "TODO LIST",
     }
     return render(request, "todo/index.html", page)
+
 
 @login_required
 def remove(request, item_id):

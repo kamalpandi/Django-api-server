@@ -4,31 +4,37 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='FullWeatherReport',
+            name="FullWeatherReport",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('city_name', models.CharField(max_length=100)),
-                ('country', models.CharField(max_length=10)),
-                ('coord', models.JSONField()),
-                ('weather', models.JSONField()),
-                ('main', models.JSONField()),
-                ('wind', models.JSONField()),
-                ('clouds', models.JSONField()),
-                ('sys', models.JSONField()),
-                ('base', models.CharField(max_length=50)),
-                ('visibility', models.IntegerField()),
-                ('dt', models.BigIntegerField()),
-                ('timezone', models.IntegerField()),
-                ('cod', models.IntegerField()),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("city_name", models.CharField(max_length=100)),
+                ("country", models.CharField(max_length=10)),
+                ("coord", models.JSONField()),
+                ("weather", models.JSONField()),
+                ("main", models.JSONField()),
+                ("wind", models.JSONField()),
+                ("clouds", models.JSONField()),
+                ("sys", models.JSONField()),
+                ("base", models.CharField(max_length=50)),
+                ("visibility", models.IntegerField()),
+                ("dt", models.BigIntegerField()),
+                ("timezone", models.IntegerField()),
+                ("cod", models.IntegerField()),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
             ],
         ),
     ]
