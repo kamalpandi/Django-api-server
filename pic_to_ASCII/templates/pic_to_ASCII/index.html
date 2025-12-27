@@ -1,0 +1,135 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ASCII Art Generator</title>
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <style>
+        /* Light Theme Styles */
+        body {
+            background-color: #f4f7f6;
+            color: #333;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+
+        .card {
+            background: #ffffff;
+            max-width: 800px;
+            width: 100%;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+        }
+
+        label {
+            font-weight: 600;
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+        }
+
+        input[type="file"], input[type="number"] {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            box-sizing: border-box;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        /* HTMX Loading Indicator */
+        .htmx-indicator {
+            display: none;
+            text-align: center;
+            margin-top: 15px;
+            color: #3498db;
+            font-weight: bold;
+        }
+        .htmx-request.htmx-indicator {
+            display: block;
+        }
+        .htmx-request#submit-btn {
+            display: none;
+        }
+
+        /* The ASCII Display Area - Optimized for "Visual Quality" */
+        #ascii-result {
+            margin-top: 30px;
+            background-color: #000; /* Keep background black for color intensity */
+            border-radius: 8px;
+            overflow: auto;
+            border: 5px solid #eee;
+        }
+
+        /* This pre tag styling is what makes the image look "well" */
+        pre {
+            font-family: "Courier New", Courier, monospace;
+            font-size: 8px;       /* Smaller font = more detail */
+            line-height: 5px;    /* Squashes the vertical gap */
+            letter-spacing: 0px;
+            margin: 0;
+            padding: 20px;
+            white-space: pre;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <h1>ASCII Art Generator</h1>
+
+    <form hx-post="{% url 'index' %}"
+          hx-target="#ascii-result"
+          hx-encoding="multipart/form-data"
+          hx-indicator="#loading"
+          method="POST">
+        {% csrf_token %}
+
+        <label for="image">Upload your image:</label>
+        <input type="file" id="image" name="image" accept="image/*" required>
+
+        <label for="width">Resolution Width (Higher = more detail, but slower):</label>
+        <input type="number" id="width" name="width" value="80" min="40" max="120">
+
+        <button type="submit" id="submit-btn">Generate Art</button>
+    </form>
+
+    <div id="loading" class="htmx-indicator">
+        ⏳ Converting image... please wait...
+    </div>
+
+    <div id="ascii-result">
+    </div>
+</div>
+
+</body>
+</html>

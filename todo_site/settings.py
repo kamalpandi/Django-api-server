@@ -33,6 +33,7 @@ ALLOWED_HOSTS = ["*", "vibi.pythonanywhere.com", "127.0.0.1:5500", "localhost"]
 INSTALLED_APPS = [
     "todo",
     "weather",
+    "pic_to_ASCII",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
