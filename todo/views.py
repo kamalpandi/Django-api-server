@@ -1,45 +1,35 @@
-from django.http import HttpResponse
-from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib import messages
-from django.contrib.auth.decorators import login_required
-from .forms import TodoForm
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework import status
 from .models import Todo
+from .serializers import TodoSerializer
 
 
-def index(request):
-    item_list = Todo.objects.order_by("-date")
-
-    if request.method == "POST":
-        form = TodoForm(request.POST)
-        if form.is_valid():
-            todo = form.save()
-            if request.headers.get("HX-Request"):
-                return render(request, "todo/partials/todo_item.html", {"i": todo})
-
-    form = TodoForm()
-    page = {
-        "forms": form,
-        "list": item_list,
-        "title": "TODO LIST",
-    }
-    return render(request, "todo/index.html", page)
+@api_view(["GET"])
+def get_todos(request):
+    todos = Todo.objects.order_by("-date")
+    serializer = TodoSerializer(todos, many=True)
+    return Response(serializer.data)
 
 
-# @login_required
-# def remove(request, item_id):
-#     item = get_object_or_404(Todo, id=item_id)
-#     item.delete()
+@api_view(["POST"])
+def create_todo(request):
+    serializer = TodoSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-#     if request.headers.get("HX-Request"):
-#         return HttpResponse("")
-#     else:
-#         messages.info(request, "Item removed !!!")
-#     return redirect("todo")
-def remove(request, item_id):
-    # Disable deletion
-    messages.warning(request, "Deleting items is currently disabled.")
-
-    if request.headers.get("HX-Request"):
-        return HttpResponse("")  # HTMX still expects a response
-    return redirect("todo")
+@api_view(["DELETE"])
+def remove_todo(request, item_id):
+    return Response(
+        {'message': 'Deletion is currently disabled.'},
+        status=status.HTTP_403_FORBIDDEN
+    )
+    # try:
+    #     todo = Todo.objects.get(id=item_id)
+    #     todo.delete()
+    #     return Response({"message": "Deleted"}, status=status.HTTP_204_NO_CONTENT)
+    # except Todo.DoesNotExist:
+    #     return Response({"error": "Not found"}, status=status.HTTP_404_NOT_FOUND)

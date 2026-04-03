@@ -10,8 +10,14 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
+import environ
 import os
 from pathlib import Path
+
+env = environ.Env(
+    # set casting, and default value
+    DEBUG=(bool, False)
+)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -24,13 +30,17 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-h(seb=dpj-v^i&2ug4j94@3li)(s$^nm_vmg9a%upy4ume$ux8"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env('DEBUG')
+
+environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
+FRONTEND_URL = env('FRONTEND_URL', default='http://localhost:5173')
 
 ALLOWED_HOSTS = ["*", "vibi.pythonanywhere.com", "127.0.0.1:5500", "localhost"]
 
 # Application definition
 
 INSTALLED_APPS = [
+    "rest_framework",
     "todo",
     "weather",
     "corsheaders",
@@ -129,10 +139,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_URL = "/static/"
-
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "todo_site", "static"),
-]
 
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 

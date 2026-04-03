@@ -2,6 +2,7 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path("", views.index),
-    path("del/<str:item_id>", views.remove, name="del"),
+    path('get_todos/', views.get_todos),
+    path('create_todo/', views.create_todo),
+    path('delete_todo/<int:item_id>/', views.remove_todo),
 ]
