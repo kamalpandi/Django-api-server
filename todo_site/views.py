@@ -1,9 +1,10 @@
-from django.shortcuts import redirect
+from django.conf import settings
 from django.http import HttpResponse
+from django.shortcuts import redirect
 
 
 def home(request):
-    return redirect("https://django-frontend-two.vercel.app/")
+    return redirect(settings.FRONTEND_URL)
 
 
 def contact(request):
