@@ -7,16 +7,16 @@ requires-python = ">=3.13"
 dependencies = [
     "asgiref==3.8.1",
     "django==5.2",
+    "django-cors-headers==4.9.0",
     "django-crispy-forms==2.4",
     "django-environ>=0.13.0",
     "djangorestframework>=3.17.1",
     "dotenv>=0.9.9",
     "pillow>=12.0.0",
+    "python-dotenv>=1.1.1",
     "sqlparse==0.5.3",
     "tzdata==2025.2",
 ]
 
 [dependency-groups]
-dev = [
-    "django-debug-toolbar>=6.0.0",
-]
+dev = ["django-debug-toolbar>=6.0.0"]
