@@ -33,7 +33,7 @@ SECRET_KEY = "django-insecure-h(seb=dpj-v^i&2ug4j94@3li)(s$^nm_vmg9a%upy4ume$ux8
 DEBUG = env('DEBUG')
 
 environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
-FRONTEND_URL = env('FRONTEND_URL', default='http://localhost:5173')
+FRONTEND_URL = env('FRONTEND_URL', default='https://django-frontend-two.vercel.app/')
 
 ALLOWED_HOSTS = ["*", "vibi.pythonanywhere.com", "127.0.0.1:5500", "localhost"]
 
